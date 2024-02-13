@@ -36,9 +36,10 @@ public class CarController {
     }
 
     @DeleteMapping("/{id}")
-    public Mono<ResponseEntity<Car>> deleteById(@PathVariable String id) {
+    public Mono<ResponseEntity<Void>> deleteById(@PathVariable String id) {
         return carService.delete(id)
-                .map(deletedCar -> ResponseEntity.ok().body(deletedCar))
+
+                .then(Mono.just(ResponseEntity.ok().<Void>build()))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 

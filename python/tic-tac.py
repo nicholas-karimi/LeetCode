@@ -22,7 +22,7 @@ def example_strategy(user_moves):
 
 def answer_example_strategy():
     # Return your answer here e.g. [1, 4, 7].
-    return []
+    return [1,4,7]
 
 
 # ---------------- Strategy 1 ----------------
@@ -57,49 +57,22 @@ def strategy_2(user_moves):
 
     for user_move in user_moves[:-1]:
         filled_cells[user_move] = True
-        winning_moves = get_winning_moves(filled_cells, 4)
-        if winning_moves:
-            bot_moves.append(winning_moves[0])
-            continue
         for delta in range(1, CELLS):
             cell = (user_move + delta) % CELLS
             if not filled_cells[cell]:
                 filled_cells[cell] = True
                 bot_moves.append(cell)
                 break
+        # check if bot won
+        if is_winning(bot_moves):
+            break
 
-    return bot_moves
-
-def get_winning_moves(filled_cells, cell=None):
-    for i in range(CELLS):
-        if filled_cells[i] and filled_cells[(i + 1) % CELLS] and filled_cells[(i + 2) % CELLS]:
-            return [i, (i + 1) % CELLS, (i + 1) * CELLS, (i + 2) *CELLS]
-        
-        if i % 2 == 0:
-            if filled_cells[i] and filled_cells[i + CELLS + 1] and filled_cells[i + 2 * CELLS + 2]:
-                return [i, i + CELLS + 1, i + 2 * CELLS + 2]
-        else:
-            if filled_cells[i] and filled_cells[i + CELLS - 1] and filled_cells[i +2 * CELLS -2]:
-                return [i, i + CELLS + 1, i + 2 * CELLS - 2]
-    if cell is not None:
-        for row in range(3):
-            for col in range(3):
-                if not filled_cells[row * CELLS + col]:
-                    f_cells = []
-                    if (row * CELLS + col) != cell:
-                        if not filled_cells[(row + 1)%3*CELLS+col] and not filled_cells[(row -1)% 3*CELLS+col]:
-                            f_cells.append((row + 1)%3*CELLS + col)
-                            f_cells.append((row - 1)%3*CELLS + col)
-                        if not filled_cells[row * CELLS + (col+1)%3] and not filled_cells[row*CELLS + (col - 1)% 3]:
-                            f_cells.append(row * CELLS + (col + 1)% 3)
-                            f_cells.append(row * CELLS + (col - 1)% 3)
-    return []
-
+    return bot_moves[:3]
 
 
 def answer_strategy_2():
     # Return your answer here.
-    return [4,5,8]
+    return [4,0,2,6,8,1,3,5,7]
 
 
 # ---------------- Strategy 3 ----------------
@@ -120,12 +93,15 @@ def strategy_3(user_moves):
                 bot_moves.append(cell)
                 break
 
-    return bot_moves
+        if is_winning(bot_moves):
+            break
+
+    return bot_moves[:3]
 
 
 def answer_strategy_3():
     # Return your answer here.
-    return [4,2,0]
+    return [8,1,3]
 
 
 # ---------------- Strategy 4 ----------------
@@ -143,9 +119,24 @@ def strategy_4(user_moves):
         empty_cells.remove(cell)
         empty_cells.remove(user_move)
 
-    return bot_moves
+        if is_winning(bot_moves):
+            break
+
+    return bot_moves[:3]
 
 
 def answer_strategy_4():
     # Return your answer here.
-    return [2,4,1]
+    return [4,0,2,6,8,1,3,5,7]
+
+def is_winning(moves):
+    winning_combinations = [
+        [0,1,3], [3,4,5], [6,7,8],
+        [0,3,6], [1,4,7], [2,5,8],
+        [0,4,8], [2,4,6]
+    ]
+
+    for combination in winning_combinations:
+        if all(cell in moves for cell in combination):
+            return True 
+    return False
