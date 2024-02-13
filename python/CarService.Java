@@ -14,28 +14,24 @@ public class CarService {
     }
 
     public Flux<Car> findAll() {
-        return null;
+        return carRepository.findAll();
     }
 
     public Mono<Car> findById(String id) {
-        return null;
+        return carRepository.findById(id);
     }
 
     public Mono<Car> create(String name) {
-        return null;
+        Car car = new Car();
+        car.setName(name);
+        return carRepository.save(car);
     }
 
-    public Mono<Car> update(String id, String name) {
-        return carRepository
-            .findById(null)
-            .map(null)
-            .flatMap(null);
+    public Mono<Car> update(Car car) {
+        return carRepository.save(car);
     }
 
-    public Mono<Car> delete(String id) {
-        return carRepository
-            .findById(null)
-            .flatMap(null);
+    public Mono<Void> delete(String id) {
+        return carRepository.deleteById(id);
     }
 }
-
