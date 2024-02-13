@@ -1,3 +1,6 @@
+Your a building a car management reactive spring webflux application. it is a java 11 and spring version 2.2.5 is used.
+The car class has been defined:
+
 public class Car {
 
     private String id;
@@ -27,3 +30,45 @@ public class Car {
         this.name = name;
     }
 }
+
+
+CarRepository is a reactive repository and has the following methods:
+public interface CarRepository {
+
+    void deleteAll();
+
+    void insertAll(List<Car> list);
+
+    Mono<Car> save(Car car);
+
+    Flux<Car> findAll();
+
+    Mono<Car> findById(String id);
+
+    Mono<Car> deleteById(String id);
+}
+
+deleteAll() removes all entries from the database.
+insertAll(List<Car> list) inserts all cars from the list into database.
+save(Car car) can be used for saving and updating cars. if the car has an id method, it will try to update an existing car; otherwise it will assign a new id and delete save to db
+findAll() returns all cars in the database or empty if the car is not found
+findById(String id) returns the car with the given id if the car is found otherwise  it will return empty mono 
+deleteById(String id) deletes the car with the given id
+
+Requirements:
+1. CarService has to implement the following methods(not you dont have to chabge the signature of the method, just their implementation)
+ - public Flux findAll() returns all cars in the database
+ - public Mono findById(String id) returns the car with the given id or empty if the car is not found
+ - public Mono create(String name) save the car in the db and return the saved instance
+ - public Mono update(String name) save the car in the db and return the updated instance
+ - public Mono delete(String name) delete the car
+
+ 2. CarController has to implement the following Requirements
+  you have to chabge the signature of the method(they will return something instead of void, and they can accept some parameters)
+  base mapping should be '/car'
+  controller should produce APPLICATION_JSON_VALUE as a media type for all methods uless stated otherwise
+  all endpoints return response wrapped in the publisher data type
+  if GET is made on the '/car' path the controller should return all cars in the database
+  if GET is made on the '/car/{id}' path the controller should return a car specided by the id from db 
+  if POST is made on the '/car' path the controller should return ResponseEntity<Car> 
+  if delete is made on the '/car/{id}' path the controller should be updated and return response entity which wraps Car
