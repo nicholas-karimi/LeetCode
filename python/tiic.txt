@@ -1,0 +1,17 @@
+# tic tac toe game is played by two players on the board of size 3*3. the first player uses symbol x while the second player uses symbol o. players take turn placing their symbols on the board. a symbol can only be placed in an empty cell, that is a cell that is not already occupied by a symbol. the goal of the game is to place three of your symbols in a single row, column or diagonal;. the board cell are indexed as follows [0|1|2]..upto 8. 
+
+# the game ends when on of the players has three symbols in a single row, columns or diagonal. If neither player achieves this goal, and there are no empty cells left on the board, the game ends in a tie.
+
+# there are four different game strategies for a tic tac toe bot. A game strategy is given as a function that takes your moves as input. The bot uses the symbol X and always starts the game. For each of these strategies prepare a sequence of moves that allows you to win the game. your last move should end the game. In other words, there should not be any additional moves after placing three of the same symbols in a single row, column or diagonal
+
+
+import random
+
+CELLS = 3*3
+
+# Example startegy 1
+def example_strategy(user_moves):
+    bot_moves = []
+    filled_cells = [False] * CELLS
+
+    
